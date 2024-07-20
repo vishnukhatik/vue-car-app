@@ -14,7 +14,7 @@ export default createStore({
     ],
   },
   getters: {
-    getCarList(state) {
+    carList(state) {
       return state.carList;
     },
   },
