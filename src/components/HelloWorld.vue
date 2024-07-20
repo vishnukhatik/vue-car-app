@@ -3,11 +3,10 @@
     <div class="container-wrap">
       <h1>Cars</h1>
       <div class="flex gap-20">
-        <!-- Custom Make Dropdown -->
         <div class="dropdown">
           <button @click="toggleMakeDropdown" class="styled-select">
             {{ selectedMake || "Select Make" }}
-            <span v-if="selectedMake" @click.stop="clearMark()">X</span>
+            <span v-if="selectedMake" @click.stop="clearMake()">X</span>
           </button>
           <div v-if="showMakeDropdown" class="dropdown-content">
             <div
@@ -20,8 +19,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Custom Color Dropdown -->
         <div class="dropdown">
           <button @click="toggleColorDropdown" class="styled-select">
             <span>
@@ -78,16 +75,19 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["carList"]),
+    ...mapGetters(["carList"]), // Map the carList getter from Vuex store
+    // Compute a unique list of car makes from carList
     uniqueMakes() {
       const makes = this.carList.map((car) => car.make);
       return [...new Set(makes)];
     },
     uniqueColors() {
+      // Compute a unique list of car colors from carList
       const colors = this.carList.map((car) => car.color);
       return [...new Set(colors)];
     },
     filteredCars() {
+      // Filter carList based on selected make and color
       return this.carList.filter((car) => {
         return (
           (!this.selectedMake || car.make === this.selectedMake) &&
@@ -98,26 +98,32 @@ export default {
   },
   methods: {
     toggleMakeDropdown() {
+      // Toggle the visibility of the make dropdown
       this.showMakeDropdown = !this.showMakeDropdown;
-      this.showColorDropdown = false; // Close color dropdown if open
+      this.showColorDropdown = false;
     },
     toggleColorDropdown() {
+      // Toggle the visibility of the color dropdown
       this.showColorDropdown = !this.showColorDropdown;
-      this.showMakeDropdown = false; // Close make dropdown if open
+      this.showMakeDropdown = false;
     },
     selectMake(make) {
+      // Set the selected make and close the make dropdown
       this.selectedMake = make;
       this.showMakeDropdown = false;
     },
     selectColor(color) {
+      // Set the selected color and close the color dropdown
       this.selectedColor = color;
       this.showColorDropdown = false;
     },
-    clearMark() {
+    clearMake() {
+      // remove the selected make and close the color dropdown
       this.selectedMake = "";
       this.showMarkDropdown = false;
     },
     clearColor() {
+      // remove the selected color and close the color dropdown
       this.selectedColor = "";
       this.showColorDropdown = false;
     },
